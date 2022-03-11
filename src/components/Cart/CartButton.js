@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const CartButton = (props) => {
   const dispatch = useDispatch();
-  const cartQuantity = useSelector((state) => state.cart.totalItems);
+  const cartQuantity = useSelector((state) => state.cart.totalItems); // This makes sure that the number in the badge updates.
 
   const toggleCartHandler = () => {
     dispatch(uiActions.toggle());
