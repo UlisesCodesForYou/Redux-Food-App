@@ -1,15 +1,42 @@
-import {uiActions} from './ui-Slice'
+import { uiActions } from "./ui-Slice";
+import { cartActions } from "./cart-Slice";
 
+// ####### FETCHING CART DATA #######
 
+export const fetchCartData = () => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      const response = await fetch(
+        "https://menu-5b54e-default-rtdb.firebaseio.com/cart.json"
+      );
 
+      if (!response.ok) {
+        throw new Error("Was not able to fetch data!");
+      }
+      const data = await response.json();
+      return data;
+    };
+    try {
+      const cartData = await fetchData();
+      dispatch(cartActions.replaceCart(cartData));
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          status: "error",
+          title: "ERROR!",
+          message: "Failed to fetch cart data!",
+        })
+      );
+    }
+  };
+};
 
-export const fetchCartData = () =>{
-   return async(dispatch) => {
-       
-   }
-}
+//##### END OF FETCHING CART DATA #############
 
-export const sendCartData = (cart) => { //This is the thunk. This will be exported as an action creator into another function. That's why i exported it. 
+// ####### START OF SENDING CART DATA #############
+
+export const sendCartData = (cart) => {
+  //This is the thunk. This will be exported as an action creator into another function. That's why i exported it.
   return async (dispatch) => {
     dispatch(
       uiActions.showNotification({
@@ -19,7 +46,8 @@ export const sendCartData = (cart) => { //This is the thunk. This will be export
       })
     );
 
-    const sendRequest = async () => { //This holds the logic for sending and receiving the response.
+    const sendRequest = async () => {
+      //This holds the logic for sending and receiving the response.
       const response = await fetch(
         "https://menu-5b54e-default-rtdb.firebaseio.com/cart.json",
         {
@@ -33,7 +61,7 @@ export const sendCartData = (cart) => { //This is the thunk. This will be export
     };
 
     try {
-      await sendRequest(); //I called sendRequest here in case it succeeds/fails.  That's why I have the success and error dispatch actions. 
+      await sendRequest(); //I called sendRequest here in case it succeeds/fails.  That's why I have the success and error dispatch actions.
       dispatch(
         uiActions.showNotification({
           status: "success",
@@ -52,3 +80,4 @@ export const sendCartData = (cart) => { //This is the thunk. This will be export
     }
   };
 };
+// ######### END OF SENDING CART DATA ########
