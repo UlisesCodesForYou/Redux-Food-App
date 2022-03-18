@@ -11,14 +11,19 @@ export const fetchCartData = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Was not able to fetch data!");
+        throw new Error("Could not get fetch data!");
       }
       const data = await response.json();
       return data;
     };
     try {
       const cartData = await fetchData();
-      dispatch(cartActions.replaceCart(cartData));
+      dispatch(
+        cartActions.replaceCart({
+          items: cartData.items || [],
+          totalItems: cartData.totalItems
+        })
+      );
     } catch (error) {
       dispatch(
         uiActions.showNotification({
@@ -52,9 +57,13 @@ export const sendCartData = (cart) => {
         "https://menu-5b54e-default-rtdb.firebaseio.com/cart.json",
         {
           method: "PUT", // This method replaces the previous data with new data.
-          body: JSON.stringify(cart), // This transforms the cart redux data to json data.
+          body: JSON.stringify({
+            items: cart.items,
+            totalItems: cart.totalItems,
+          }), // This transforms the cart redux data to json data.
         }
       );
+
       if (!response.ok) {
         throw new Error("Sending cart data failed!");
       }

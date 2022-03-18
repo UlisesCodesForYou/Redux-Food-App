@@ -19,6 +19,8 @@ const ProductItem = (props) => {
     );
   };
 
+  
+
   // const removeFromCartHandler = () => {
   //   dispatch(cartActions.removeItemFromCart());
   // };

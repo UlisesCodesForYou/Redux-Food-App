@@ -14,6 +14,7 @@ const cartSlice = createSlice({
       state.totalItems = action.payload.totalItems;
       state.items = action.payload.items;
     },
+
     addItemToCart(state, action) {
       const newItem = action.payload;
       const existingItem = state.items.find((item) => item.id === newItem.id); // This is how to check if a certain item item already exists.
@@ -32,6 +33,7 @@ const cartSlice = createSlice({
         existingItem.totalPrice = existingItem.totalPrice + newItem.price;
       }
     },
+
     removeItemFromCart(state, action) {
       const id = action.payload; //This ID is the payload!!!
       const existingItem = state.items.find((item) => item.id === id);
