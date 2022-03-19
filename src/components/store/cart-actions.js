@@ -13,15 +13,18 @@ export const fetchCartData = () => {
       if (!response.ok) {
         throw new Error("Could not get fetch data!");
       }
+
       const data = await response.json();
+
       return data;
     };
+
     try {
       const cartData = await fetchData();
       dispatch(
         cartActions.replaceCart({
           items: cartData.items || [],
-          totalItems: cartData.totalItems
+          totalItems: cartData.totalItems,
         })
       );
     } catch (error) {
